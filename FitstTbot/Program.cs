@@ -32,6 +32,10 @@ namespace FitstTbot
         private static State State;
 
         #region Hide
+        /// <summary>
+        /// Подписка на обновление
+        /// </summary>
+        /// <param name="token"></param>
         public static void Start(string token)
         {
             var path = Environment.CurrentDirectory + @"\state.json";
@@ -50,10 +54,28 @@ namespace FitstTbot
                 HandleErrorAsync, receiverOptions, cancellationToken);
 
         }
+
+        /// <summary>
+        /// Обработка ошибок рудимент
+        /// </summary>
+        /// <param name="botClient"></param>
+        /// <param name="ex"></param>
+        /// <param name="errorSource"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         private static Task HandleErrorAsync(ITelegramBotClient botClient, Exception ex, HandleErrorSource errorSource, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
+        
+        /// <summary>
+        /// Обработка входящих сигналов (сообщения, фотки, гс и т.д.)
+        /// </summary>
+        /// <param name="botClient"></param>
+        /// <param name="update"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             try
@@ -73,6 +95,11 @@ namespace FitstTbot
                 throw;
             }
         }
+
+        /// <summary>
+        /// Обработка CallbackQuery (кнопка под сообщением)
+        /// </summary>
+        /// <param name="update"></param>
         private static void ParseCallbackData(Update update)
         {
             var query = update.CallbackQuery;
@@ -88,6 +115,11 @@ namespace FitstTbot
             user.Id = chatId.Identifier ?? -1;
             NewCallData(user, data);
         }
+
+        /// <summary>
+        /// Обработка обычных сообщений и кнопок
+        /// </summary>
+        /// <param name="update"></param>
         private static void ParseTextMessage(Update update)
         {
             //check
@@ -110,7 +142,11 @@ namespace FitstTbot
         }
 
         #endregion
-
+        /// <summary>
+        /// Набор команд CallbackQuery
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="message"></param>
         private static void NewCallData(TUser user, string data)
         {
             if (data == "pro")
@@ -123,6 +159,11 @@ namespace FitstTbot
                 }
             }
         }
+        /// <summary>
+        /// Набор команд
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="message"></param>
         private static void NewMessage(TUser user, string message)
         {
             string? text = null;
